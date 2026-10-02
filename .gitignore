@@ -1,3 +1,9 @@
 *ROADMAP.md
 *BENCHMARK.md
-*Phase_0
+*TEST_CSVS_PHASE_0
+*PY_JSON
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.env

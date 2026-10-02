@@ -1,4 +1,4 @@
-# Kriva
+# Kriva ![Practice Project](https://img.shields.io/badge/type-Practice%20Project-green)
 
 Kriva is a local-first model router for software-engineering tasks. The current
 implementation is the Phase 1 deterministic core: it reads the current Git

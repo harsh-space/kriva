@@ -7,6 +7,9 @@ from .db import log_run, recent_runs
 from .providers import PROVIDERS
 from .repo import NotAGitRepo, read_repo
 
+from dotenv import load_dotenv
+load_dotenv()
+
 app = typer.Typer(help="Adaptive model router (Phase 1: deterministic core)")
 
 

@@ -3,7 +3,7 @@ name = "router"
 version = "0.1.0"
 description = "Adaptive model router for software-engineering agents (Phase 1: deterministic core)"
 requires-python = ">=3.10"
-dependencies = ["typer", "httpx", "GitPython"]
+dependencies = ["typer", "httpx", "GitPython", "python-dotenv"]
 
 [project.scripts]
 router = "router.cli:app"

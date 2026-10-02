@@ -4,7 +4,9 @@ DB lives at ~/.router/runs.db (override with ROUTER_DB env var).
 """
 import os
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
+from typing import Iterator
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs (
@@ -30,12 +32,20 @@ def db_path() -> Path:
     return Path(override) if override else Path.home() / ".router" / "runs.db"
 
 
-def _conn() -> sqlite3.Connection:
+@contextmanager
+def _conn() -> Iterator[sqlite3.Connection]:
     path = db_path()
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
-    conn.execute(SCHEMA)
-    return conn
+    try:
+        conn.execute(SCHEMA)
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
 
 def log_run(**fields) -> None:

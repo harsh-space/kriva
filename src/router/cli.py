@@ -1,5 +1,6 @@
 """Step 6: the CLI. CLI -> repo -> provider -> print -> log."""
 import asyncio
+from pathlib import Path
 
 import typer
 
@@ -8,7 +9,10 @@ from .providers import PROVIDERS
 from .repo import NotAGitRepo, read_repo
 
 from dotenv import load_dotenv
-load_dotenv()
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(PROJECT_ROOT / "src" / ".env")
 
 app = typer.Typer(help="Adaptive model router (Phase 1: deterministic core)")
 
@@ -24,10 +28,10 @@ def main():
 def ask(
     task: str = typer.Argument(..., help="What you want the model to do"),
     provider: str = typer.Option(
-        "ollama", help="Hardcoded for now (Phase 2 replaces this with a router): "
+        "ollama", help="Provider to use (manual selection; automatic routing is Phase 2): "
                        + " | ".join(PROVIDERS)),
 ):
-    """Send TASK plus the current git diff to a single hardcoded model."""
+    """Send TASK plus the current git diff to one selected model."""
     if provider not in PROVIDERS:
         typer.echo(f"Unknown provider '{provider}'. Choose from: {', '.join(PROVIDERS)}", err=True)
         raise typer.Exit(2)

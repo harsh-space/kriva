@@ -1,2 +1,0 @@
-[console_scripts]
-router = router.cli:app

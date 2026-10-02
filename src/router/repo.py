@@ -14,11 +14,14 @@ def read_repo(path: str = ".") -> dict:
     except InvalidGitRepositoryError:
         raise NotAGitRepo(f"'{path}' is not inside a git repository")
 
-    root = repo.working_tree_dir
-    if not repo.head.is_valid():  # repo with zero commits
-        return {"root": root, "commit_sha": None, "diff": ""}
+    try:
+        root = repo.working_tree_dir
+        if not repo.head.is_valid():  # repo with zero commits
+            return {"root": root, "commit_sha": None, "diff": ""}
 
-    diff = repo.git.diff("HEAD")  # staged + unstaged changes vs last commit
-    if len(diff) > MAX_DIFF_CHARS:
-        diff = diff[:MAX_DIFF_CHARS] + "\n...[diff truncated]"
-    return {"root": root, "commit_sha": repo.head.commit.hexsha, "diff": diff}
+        diff = repo.git.diff("HEAD")  # staged + unstaged changes vs last commit
+        if len(diff) > MAX_DIFF_CHARS:
+            diff = diff[:MAX_DIFF_CHARS] + "\n...[diff truncated]"
+        return {"root": root, "commit_sha": repo.head.commit.hexsha, "diff": diff}
+    finally:
+        repo.close()

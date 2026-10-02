@@ -1,3 +1,7 @@
+*ROADMAP.md
+*BENCHMARK.md
+*TEST_CSVS_PHASE_0
+*PY_JSON
 .venv/
 __pycache__/
 *.pyc
